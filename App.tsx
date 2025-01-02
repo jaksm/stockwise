@@ -1,14 +1,20 @@
+import './gesture-handler';
+
 import React from 'react';
-import {SafeAreaView, StatusBar, Text, useColorScheme} from 'react-native';
+
+import {NavigationContainer} from '@react-navigation/native';
+import {StatusBar, useColorScheme} from 'react-native';
+
+import {RootStack} from './app/RootStack';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaView>
+    <NavigationContainer>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Text>Hello World</Text>
-    </SafeAreaView>
+      <RootStack />
+    </NavigationContainer>
   );
 }
 
