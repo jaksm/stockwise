@@ -1,6 +1,7 @@
 import React from 'react';
-import {Button, Text, View} from 'react-native';
 import type {RootStackNavigation} from '../RootStack';
+import {Button} from '../components/ui/Button';
+import {Flex} from '../components/ui/Flex';
 
 type HomeScreenProps = {
   navigation: RootStackNavigation;
@@ -8,18 +9,14 @@ type HomeScreenProps = {
 
 export function Home({navigation}: HomeScreenProps) {
   return (
-    <View>
-      <Text>Home Screen</Text>
+    <Flex gap="3">
+      <Button onPress={() => navigation.navigate('AssetDetails')}>
+        Go to Asset Details
+      </Button>
 
-      <Button
-        onPress={() => navigation.navigate('AssetDetails')}
-        title="Go to Asset Details"
-      />
-
-      <Button
-        onPress={() => navigation.navigate('ManageWatchlist')}
-        title="Go to Manage Watchlist"
-      />
-    </View>
+      <Button onPress={() => navigation.navigate('ManageWatchlist')}>
+        Go to Manage Watchlist
+      </Button>
+    </Flex>
   );
 }

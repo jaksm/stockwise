@@ -8,9 +8,12 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "pod:install": "npx pod-install ios"
+    "pod-install": "npx pod-install ios",
+    "link-assets": "npx react-native-asset",
+    "postinstall": "npm run pod-install && npm run link-assets"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.1.1",
     "@react-navigation/elements": "^2.2.5",
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
