@@ -2,9 +2,7 @@ import React from 'react';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import {AssetDetails} from './screens/AssetDetails';
 import {Home} from './screens/Home';
-import {ManageWatchlist} from './screens/ManageWatchlist';
 
 import {NavigationProp} from '@react-navigation/native';
 import {useRootStackScreenOptions} from './hooks/useRootStackScreenOptions';
@@ -30,16 +28,6 @@ export const RootStack = () => {
         options={{
           headerShown: false,
         }}
-      />
-      <Stack.Screen
-        name="AssetDetails"
-        options={{title: 'Asset Details'}}
-        component={AssetDetails}
-      />
-      <Stack.Screen
-        name="ManageWatchlist"
-        options={{title: 'Manage Watchlist'}}
-        component={ManageWatchlist}
       />
     </Stack.Navigator>
   );
