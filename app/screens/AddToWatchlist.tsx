@@ -1,3 +1,4 @@
+import {CommonActions} from '@react-navigation/native';
 import {ChevronLeft} from 'lucide-react-native';
 import React, {useState} from 'react';
 import {RootStackNavigation} from '../RootStack';
@@ -24,9 +25,15 @@ export function AddToWatchlist({navigation}: AddToWatchlistProps) {
   );
 
   const onAddToWatchlist = (asset: SearchResult) => {
-    watchlist.addSymbol(asset.symbol);
     setSearchTerm('');
-    navigation.navigate('Home');
+    watchlist.addSymbol(asset.symbol).then(() =>
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'Home'}],
+        }),
+      ),
+    );
   };
 
   return (

@@ -27,6 +27,7 @@ export const RootStack = () => {
         component={Home}
         options={{
           headerShown: false,
+          animation: 'slide_from_left',
         }}
       />
       <Stack.Screen
@@ -34,6 +35,7 @@ export const RootStack = () => {
         component={AddToWatchlist}
         options={{
           headerShown: false,
+          animation: 'slide_from_right',
         }}
       />
     </Stack.Navigator>
