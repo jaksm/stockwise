@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import type {RootStackNavigation} from '../RootStack';
 import {useGetAssetsQuery, useSearchAssetsQuery} from '../api/queries';
-import {AssetSearchResultsList} from '../components/AssetSearchResultsList';
 import {SearchBar} from '../components/SearchBar';
+import {SearchResultsList} from '../components/SearchResultList';
 import {WatchList} from '../components/WatchList';
 import {Flex} from '../components/ui/Flex';
 import {useWatchlistStore} from '../hooks/useWatchlistStore';
-import {AssetSearchResult} from '../models/AssetSearchResult';
+import {SearchResult} from '../models/SearchResult';
 
 type HomeScreenProps = {
   navigation: RootStackNavigation;
@@ -24,7 +24,7 @@ export function Home(_: HomeScreenProps) {
     result => !watchlist.symbols.includes(result.symbol),
   );
 
-  const onAddToWatchlist = (asset: AssetSearchResult) => {
+  const onAddToWatchlist = (asset: SearchResult) => {
     watchlist.addSymbol(asset.symbol);
     setSearchTerm('');
   };
@@ -38,7 +38,7 @@ export function Home(_: HomeScreenProps) {
       />
 
       {isSearching ? (
-        <AssetSearchResultsList
+        <SearchResultsList
           data={filteredResults}
           isLoading={searchQuery.isLoading}
           isError={searchQuery.isError}

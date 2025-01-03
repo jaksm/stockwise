@@ -7,32 +7,29 @@ import {
   View,
 } from 'react-native';
 import {useTheme} from '../hooks/useTheme';
-import {
-  AssetSearchResult,
-  AssetSearchResultType,
-} from '../models/AssetSearchResult';
-import {AssetSearchResultListItem} from './AssetSearchResultListItem';
+import {SearchResult} from '../models/SearchResult';
+import {SearchResultListItem} from './SearchResultListItem';
 import {Flex} from './ui/Flex';
 import {Body, Subheading} from './ui/typography';
 
-type AssetSearchResultsListProps = {
-  data?: AssetSearchResult[];
+type SearchResultsListProps = {
+  data?: SearchResult[];
   isError?: boolean;
   isLoading?: boolean;
-  onItemPress?: (item: AssetSearchResult) => void;
+  onItemPress?: (item: SearchResult) => void;
 };
 
 type Section = {
-  title: AssetSearchResultType;
-  data: AssetSearchResult[];
+  title: string;
+  data: SearchResult[];
 };
 
-export function AssetSearchResultsList({
+export function SearchResultsList({
   data,
   isError,
   isLoading,
   onItemPress,
-}: AssetSearchResultsListProps) {
+}: SearchResultsListProps) {
   const theme = useTheme();
 
   if (isLoading) {
@@ -93,11 +90,8 @@ export function AssetSearchResultsList({
     },
   });
 
-  const renderItem: ListRenderItem<AssetSearchResult> = ({item}) => (
-    <AssetSearchResultListItem
-      value={item}
-      onPress={() => onItemPress?.(item)}
-    />
+  const renderItem: ListRenderItem<SearchResult> = ({item}) => (
+    <SearchResultListItem value={item} onPress={() => onItemPress?.(item)} />
   );
 
   const renderSectionHeader = ({section}: {section: Section}) => (

@@ -2,15 +2,18 @@ import {Plus} from 'lucide-react-native';
 import React from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
 import {useTheme} from '../hooks/useTheme';
-import {AssetSearchResult} from '../models/AssetSearchResult';
+import {SearchResult} from '../models/SearchResult';
 import {Flex} from './ui/Flex';
 
-type Props = {
-  value: AssetSearchResult;
+type SearchResultListItemProps = {
+  value: SearchResult;
   onPress?: () => void;
 };
 
-export function AssetSearchResultListItem({value, onPress}: Props) {
+export function SearchResultListItem({
+  value,
+  onPress,
+}: SearchResultListItemProps) {
   const theme = useTheme();
 
   const styles = StyleSheet.create({

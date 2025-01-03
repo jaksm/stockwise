@@ -1,6 +1,6 @@
 import {API_KEY, API_URL} from '@env';
 import {Asset, AssetSchema} from '../models/Asset';
-import {AssetSearchResultSchema} from '../models/AssetSearchResult';
+import {SearchResultSchema} from '../models/SearchResult';
 import {
   GlobalQuoteResponse,
   OverviewResponse,
@@ -15,7 +15,7 @@ export async function symbolSearch(keywords: string) {
   const {bestMatches}: SymbolSearchResponse = await response.json();
 
   return bestMatches.map(match =>
-    AssetSearchResultSchema.parse({
+    SearchResultSchema.parse({
       currency: match['8. currency'],
       name: match['2. name'],
       region: match['4. region'],

@@ -1,6 +1,6 @@
 import {z} from 'zod';
 
-export const AssetSearchResultSchema = z.object({
+export const SearchResultSchema = z.object({
   currency: z.string(),
   name: z.string(),
   region: z.string(),
@@ -8,4 +8,4 @@ export const AssetSearchResultSchema = z.object({
   type: z.string(),
 });
 
-export type AssetSearchResult = z.infer<typeof AssetSearchResultSchema>;
+export type SearchResult = z.infer<typeof SearchResultSchema>;
