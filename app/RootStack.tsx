@@ -6,11 +6,11 @@ import {Home} from './screens/Home';
 
 import {NavigationProp} from '@react-navigation/native';
 import {useRootStackScreenOptions} from './hooks/useRootStackScreenOptions';
+import {AddToWatchlist} from './screens/AddToWatchlist';
 
 export type RootStackParamList = {
   Home: undefined;
-  AssetDetails: undefined;
-  ManageWatchlist: undefined;
+  AddToWatchlist: undefined;
 };
 
 export type RootStackNavigation = NavigationProp<RootStackParamList>;
@@ -25,6 +25,13 @@ export const RootStack = () => {
       <Stack.Screen
         name="Home"
         component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="AddToWatchlist"
+        component={AddToWatchlist}
         options={{
           headerShown: false,
         }}

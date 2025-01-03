@@ -1,58 +1,40 @@
-import React, {useState} from 'react';
+import {Plus} from 'lucide-react-native';
+import React from 'react';
 import type {RootStackNavigation} from '../RootStack';
-import {useGetAssetsQuery, useSearchAssetsQuery} from '../api/queries';
-import {SearchBar} from '../components/SearchBar';
-import {SearchResultsList} from '../components/SearchResultList';
+import {useGetAssetsQuery} from '../api/queries';
+import {FloatingActionButton} from '../components/FloatingActionButton';
 import {WatchList} from '../components/WatchList';
 import {Flex} from '../components/ui/Flex';
+import {Title} from '../components/ui/typography';
+import {useTheme} from '../hooks/useTheme';
 import {useWatchlistStore} from '../hooks/useWatchlistStore';
-import {SearchResult} from '../models/SearchResult';
 
-type HomeScreenProps = {
+type HomeProps = {
   navigation: RootStackNavigation;
 };
 
-export function Home(_: HomeScreenProps) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const isSearching = searchTerm.length > 0;
+export function Home({navigation}: HomeProps) {
+  const theme = useTheme();
 
-  const searchQuery = useSearchAssetsQuery(searchTerm);
   const watchlist = useWatchlistStore('default-watchlist');
   const watchlistQuery = useGetAssetsQuery(watchlist.symbols);
 
-  const filteredResults = searchQuery.data?.filter(
-    result => !watchlist.symbols.includes(result.symbol),
-  );
-
-  const onAddToWatchlist = (asset: SearchResult) => {
-    watchlist.addSymbol(asset.symbol);
-    setSearchTerm('');
-  };
-
   return (
-    <Flex gap="3" paddingTop="4">
-      <SearchBar
-        placeholder="Search assets..."
-        value={searchTerm}
-        onChangeText={setSearchTerm}
+    <Flex gap="1" paddingTop="6" flex={1}>
+      <Title>StockWise</Title>
+
+      <WatchList
+        data={watchlistQuery.data}
+        isError={watchlistQuery.isError}
+        isLoading={watchlistQuery.isLoading}
+        isRefreshing={watchlistQuery.isRefetching}
+        onRefresh={watchlistQuery.refetch}
       />
 
-      {isSearching ? (
-        <SearchResultsList
-          data={filteredResults}
-          isLoading={searchQuery.isLoading}
-          isError={searchQuery.isError}
-          onItemPress={onAddToWatchlist}
-        />
-      ) : (
-        <WatchList
-          data={watchlistQuery.data}
-          isError={watchlistQuery.isError}
-          isLoading={watchlistQuery.isLoading}
-          isRefreshing={watchlistQuery.isRefetching}
-          onRefresh={watchlistQuery.refetch}
-        />
-      )}
+      <FloatingActionButton
+        icon={<Plus color={theme.colors.text.base} />}
+        onPress={() => navigation.navigate('AddToWatchlist')}
+      />
     </Flex>
   );
 }

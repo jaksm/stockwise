@@ -8,6 +8,7 @@ type SearchBarProps = {
   value: string;
   placeholder?: string;
   debounceTime?: number;
+  autoFocus?: boolean;
   onChangeText: (text: string) => void;
   onClear?: () => void;
 };
@@ -16,6 +17,7 @@ export function SearchBar({
   value,
   placeholder,
   debounceTime = 300,
+  autoFocus,
   onChangeText,
   onClear,
 }: SearchBarProps) {
@@ -41,6 +43,7 @@ export function SearchBar({
 
   const styles = StyleSheet.create({
     container: {
+      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: theme.colors.inverted,
@@ -67,6 +70,7 @@ export function SearchBar({
         placeholder={placeholder}
         placeholderTextColor={theme.colors.text.inverted}
         style={styles.input}
+        autoFocus={autoFocus}
         autoCapitalize="none"
         autoComplete="off"
         autoCorrect={false}
