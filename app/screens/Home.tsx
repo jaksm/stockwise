@@ -2,7 +2,7 @@ import {Plus} from 'lucide-react-native';
 import React from 'react';
 import type {RootStackNavigation} from '../RootStack';
 import {useGetAssetsQuery} from '../api/queries';
-import {WatchList} from '../components/WatchList';
+import {Watchlist} from '../components/Watchlist';
 import {WatchlistRefreshButton} from '../components/WatchlistRefreshButton';
 import {Flex} from '../components/ui/Flex';
 import {FloatingActionButton} from '../components/ui/FloatingActionButton';
@@ -25,7 +25,7 @@ export function Home({navigation}: HomeProps) {
         <WatchlistRefreshButton />
       </Flex>
 
-      <WatchList
+      <Watchlist
         data={watchlistQuery.data}
         isError={watchlistQuery.isError}
         isLoading={watchlistQuery.isLoading}

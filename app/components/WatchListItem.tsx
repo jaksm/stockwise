@@ -12,7 +12,7 @@ type WatchlistItemProps = {
   onRemove?: (value: Asset) => void;
 };
 
-export function WatchListItem({value, onPress, onRemove}: WatchlistItemProps) {
+export function WatchlistItem({value, onPress, onRemove}: WatchlistItemProps) {
   const theme = useTheme();
 
   const isPositiveChange = Number(value.change) >= 0;

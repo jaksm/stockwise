@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 import {useTheme} from '../hooks/useTheme';
 import {Asset} from '../models/Asset';
-import {WatchListItem} from './WatchListItem';
+import {WatchlistItem} from './WatchlistItem';
 import {Flex} from './ui/Flex';
 import {Body, Subheading} from './ui/typography';
 
-type WatchListProps = {
+type WatchlistProps = {
   data?: Asset[];
   isError?: boolean;
   isLoading?: boolean;
@@ -28,7 +28,7 @@ type Section = {
   data: Asset[];
 };
 
-export function WatchList({
+export function Watchlist({
   data = [],
   isError,
   isLoading,
@@ -36,7 +36,7 @@ export function WatchList({
   onRefresh,
   onItemPress,
   onRemoveItem,
-}: WatchListProps) {
+}: WatchlistProps) {
   const theme = useTheme();
 
   if (isLoading) {
@@ -94,7 +94,7 @@ export function WatchList({
   });
 
   const renderItem: ListRenderItem<Asset> = ({item}) => (
-    <WatchListItem
+    <WatchlistItem
       value={item}
       onPress={() => onItemPress?.(item)}
       onRemove={() => onRemoveItem?.(item)}
