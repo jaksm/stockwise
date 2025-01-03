@@ -21,7 +21,10 @@ export function useSearchAssetsQuery(searchTerm: string) {
   });
 }
 
-export function useGetAssetsQuery(symbols: string[]) {
+export function useGetAssetsQuery(
+  symbols: string[],
+  options?: {isLive?: boolean},
+) {
   const queryKey = `get-assets-[${symbols.join(',')}]`;
   const enabled = symbols.length > 0;
   const queryFn = () => Promise.all(symbols.map(client.getAsset));
@@ -29,5 +32,6 @@ export function useGetAssetsQuery(symbols: string[]) {
   return useQuery(queryKey, {
     queryFn,
     enabled,
+    refetchInterval: options?.isLive ? 1_000 : undefined,
   });
 }

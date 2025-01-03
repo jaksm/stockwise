@@ -3,10 +3,10 @@ import React from 'react';
 import type {RootStackNavigation} from '../RootStack';
 import {useGetAssetsQuery} from '../api/queries';
 import {WatchList} from '../components/WatchList';
+import {WatchlistRefreshButton} from '../components/WatchlistRefreshButton';
 import {Flex} from '../components/ui/Flex';
 import {FloatingActionButton} from '../components/ui/FloatingActionButton';
 import {Title} from '../components/ui/typography';
-import {useTheme} from '../hooks/useTheme';
 import {useWatchlistStore} from '../hooks/useWatchlistStore';
 
 type HomeProps = {
@@ -14,14 +14,16 @@ type HomeProps = {
 };
 
 export function Home({navigation}: HomeProps) {
-  const theme = useTheme();
-
   const watchlist = useWatchlistStore('default-watchlist');
   const watchlistQuery = useGetAssetsQuery(watchlist.symbols);
 
   return (
     <Flex gap="1" paddingTop="6" flex={1}>
-      <Title>StockWise</Title>
+      <Flex direction="row" align="center" justify="space-between">
+        <Title>StockWise</Title>
+
+        <WatchlistRefreshButton />
+      </Flex>
 
       <WatchList
         data={watchlistQuery.data}
@@ -32,7 +34,7 @@ export function Home({navigation}: HomeProps) {
       />
 
       <FloatingActionButton
-        icon={<Plus color={theme.colors.text.base} />}
+        icon={<Plus />}
         onPress={() => navigation.navigate('AddToWatchlist')}
       />
     </Flex>
