@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
-import {useTheme} from '../hooks/useTheme';
-import {Background, Foreground, Spacing} from '../theme';
+import {useTheme} from '../../hooks/useTheme';
+import {Background, Foreground, Spacing} from '../../theme';
 
 type FloatingActionButtonProps = {
   icon: React.ReactElement;
