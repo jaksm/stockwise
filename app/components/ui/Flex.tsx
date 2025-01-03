@@ -51,7 +51,6 @@ export function Flex({
 
   const dynamicStyles = StyleSheet.create({
     container: {
-      position: 'relative',
       flex,
       flexDirection: direction,
       flexWrap: wrap,

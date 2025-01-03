@@ -31,6 +31,7 @@ export function Home({navigation}: HomeProps) {
         isLoading={watchlistQuery.isLoading}
         isRefreshing={watchlistQuery.isRefetching}
         onRefresh={watchlistQuery.refetch}
+        onRemoveItem={item => watchlist.removeSymbol(item.symbol)}
       />
 
       <FloatingActionButton

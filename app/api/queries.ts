@@ -33,5 +33,6 @@ export function useGetAssetsQuery(
     queryFn,
     enabled,
     refetchInterval: options?.isLive ? 1_000 : undefined,
+    keepPreviousData: true,
   });
 }
