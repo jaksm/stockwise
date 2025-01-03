@@ -24,7 +24,13 @@ export const RootStack = () => {
 
   return (
     <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name="AssetDetails"
         options={{title: 'Asset Details'}}

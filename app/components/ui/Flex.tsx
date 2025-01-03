@@ -15,6 +15,13 @@ type FlexProps = {
   shrink?: ViewStyle['flexShrink'];
   basis?: ViewStyle['flexBasis'];
   gap?: Spacing;
+  padding?: Spacing;
+  paddingHorizontal?: Spacing;
+  paddingVertical?: Spacing;
+  paddingTop?: Spacing;
+  paddingRight?: Spacing;
+  paddingBottom?: Spacing;
+  paddingLeft?: Spacing;
   style?: ViewStyle;
 };
 
@@ -30,6 +37,13 @@ export function Flex({
   shrink,
   basis,
   gap,
+  padding,
+  paddingHorizontal,
+  paddingVertical,
+  paddingTop,
+  paddingRight,
+  paddingBottom,
+  paddingLeft,
   style,
   ...props
 }: FlexProps) {
@@ -49,6 +63,19 @@ export function Flex({
           flexShrink: shrink,
           flexBasis: basis,
           gap: gap ? theme.spacing[gap] : undefined,
+          padding: padding ? theme.spacing[padding] : undefined,
+          paddingHorizontal: paddingHorizontal
+            ? theme.spacing[paddingHorizontal]
+            : undefined,
+          paddingVertical: paddingVertical
+            ? theme.spacing[paddingVertical]
+            : undefined,
+          paddingTop: paddingTop ? theme.spacing[paddingTop] : undefined,
+          paddingRight: paddingRight ? theme.spacing[paddingRight] : undefined,
+          paddingBottom: paddingBottom
+            ? theme.spacing[paddingBottom]
+            : undefined,
+          paddingLeft: paddingLeft ? theme.spacing[paddingLeft] : undefined,
         },
         style,
       ]}

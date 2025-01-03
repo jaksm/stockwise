@@ -19,7 +19,8 @@ export function useRootStackScreenOptions(): NativeStackNavigationOptions {
     },
     contentStyle: {
       backgroundColor: theme.colors.background,
-      padding: theme.spacing['3.5'],
+      paddingVertical: theme.spacing['4'],
+      paddingHorizontal: theme.spacing['2'],
     },
   };
 }
