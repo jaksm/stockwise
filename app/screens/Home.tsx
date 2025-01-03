@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import type {RootStackNavigation} from '../RootStack';
-import {useAssetSearchQuery} from '../api/queries';
+import {useGetAssetsQuery, useSearchAssetsQuery} from '../api/queries';
 import {AssetSearchResultsList} from '../components/AssetSearchResultsList';
 import {SearchBar} from '../components/SearchBar';
+import {WatchList} from '../components/WatchList';
 import {Flex} from '../components/ui/Flex';
 import {useWatchlistStore} from '../hooks/useWatchlistStore';
 import {AssetSearchResult} from '../models/AssetSearchResult';
@@ -13,23 +14,18 @@ type HomeScreenProps = {
 
 export function Home(_: HomeScreenProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [showResults, setShowResults] = useState(true);
+  const isSearching = searchTerm.length > 0;
 
-  const searchQuery = useAssetSearchQuery(searchTerm);
+  const searchQuery = useSearchAssetsQuery(searchTerm);
   const watchlist = useWatchlistStore('default-watchlist');
+  const watchlistQuery = useGetAssetsQuery(watchlist.symbols);
 
   const filteredResults = searchQuery.data?.filter(
     result => !watchlist.symbols.includes(result.symbol),
   );
 
-  const onSearch = (term: string) => {
-    setSearchTerm(term);
-    setShowResults(true);
-  };
-
   const onAddToWatchlist = (asset: AssetSearchResult) => {
     watchlist.addSymbol(asset.symbol);
-    setShowResults(false);
     setSearchTerm('');
   };
 
@@ -38,15 +34,23 @@ export function Home(_: HomeScreenProps) {
       <SearchBar
         placeholder="Search assets..."
         value={searchTerm}
-        onChangeText={onSearch}
+        onChangeText={setSearchTerm}
       />
 
-      {showResults && (
+      {isSearching ? (
         <AssetSearchResultsList
           data={filteredResults}
           isLoading={searchQuery.isLoading}
           isError={searchQuery.isError}
           onItemPress={onAddToWatchlist}
+        />
+      ) : (
+        <WatchList
+          data={watchlistQuery.data}
+          isError={watchlistQuery.isError}
+          isLoading={watchlistQuery.isLoading}
+          isRefreshing={watchlistQuery.isRefetching}
+          onRefresh={watchlistQuery.refetch}
         />
       )}
     </Flex>
