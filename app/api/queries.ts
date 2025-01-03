@@ -1,5 +1,6 @@
-import { useQuery } from 'react-query';
+import {useQuery} from 'react-query';
 import * as client from './client';
+// import * as client from './mockClient';
 
 export function useAssetSearchQuery(keywords: string) {
   const queryKey = `asset-search-[${keywords}]`;
