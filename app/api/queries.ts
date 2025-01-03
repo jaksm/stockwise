@@ -1,6 +1,11 @@
+import {MOCK} from '@env';
+
 import {useQuery} from 'react-query';
-import * as client from './client';
-// import * as client from './mockClient';
+
+import * as api from './client';
+import * as mockApi from './mockClient';
+
+const client = MOCK ? mockApi : api;
 
 export function useAssetSearchQuery(keywords: string) {
   const queryKey = `asset-search-[${keywords}]`;
