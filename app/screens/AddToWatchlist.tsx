@@ -1,11 +1,11 @@
-import {HeaderBackButton} from '@react-navigation/elements';
+import {ChevronLeft} from 'lucide-react-native';
 import React, {useState} from 'react';
 import {RootStackNavigation} from '../RootStack';
 import {useSearchAssetsQuery} from '../api/queries';
 import {SearchBar} from '../components/SearchBar';
 import {SearchResultsList} from '../components/SearchResultList';
 import {Flex} from '../components/ui/Flex';
-import {useTheme} from '../hooks/useTheme';
+import {IconButton} from '../components/ui/IconButton';
 import {useWatchlistStore} from '../hooks/useWatchlistStore';
 import {SearchResult} from '../models/SearchResult';
 
@@ -14,8 +14,6 @@ type AddToWatchlistProps = {
 };
 
 export function AddToWatchlist({navigation}: AddToWatchlistProps) {
-  const theme = useTheme();
-
   const [searchTerm, setSearchTerm] = useState('');
   const searchQuery = useSearchAssetsQuery(searchTerm);
 
@@ -33,9 +31,10 @@ export function AddToWatchlist({navigation}: AddToWatchlistProps) {
 
   return (
     <Flex gap="3" paddingTop="4">
-      <Flex direction="row" gap="2">
-        <HeaderBackButton
-          tintColor={theme.colors.text.base}
+      <Flex direction="row" align="center" gap="2">
+        <IconButton
+          size="12"
+          icon={<ChevronLeft />}
           onPress={() => navigation.goBack()}
         />
 
