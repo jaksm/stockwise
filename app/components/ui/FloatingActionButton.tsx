@@ -23,8 +23,8 @@ export function FloatingActionButton({
   const dynamicStyles = StyleSheet.create({
     button: {
       position: 'absolute',
-      bottom: 0,
-      right: 0,
+      bottom: theme.spacing['2'],
+      right: theme.spacing['2'],
       width: theme.spacing[size],
       height: theme.spacing[size],
       borderRadius: theme.spacing[size] / 2,

@@ -3,6 +3,7 @@ import {Animated, Pressable, StyleSheet} from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {useTheme} from '../hooks/useTheme';
 import {Asset} from '../models/Asset';
+import {AssetChangeLabel} from './AssetChangeLabel';
 import {Flex} from './ui/Flex';
 import {Label, Subheading} from './ui/typography';
 
@@ -14,12 +15,6 @@ type WatchlistItemProps = {
 
 export function WatchlistItem({value, onPress, onRemove}: WatchlistItemProps) {
   const theme = useTheme();
-
-  const isPositiveChange = Number(value.change) >= 0;
-  const changeColor = isPositiveChange
-    ? theme.colors.success
-    : theme.colors.error;
-  const changePrefix = isPositiveChange ? '+' : '';
 
   const styles = StyleSheet.create({
     container: {
@@ -70,10 +65,7 @@ export function WatchlistItem({value, onPress, onRemove}: WatchlistItemProps) {
 
           <Flex direction="column" gap="1" align="flex-end">
             <Subheading muted={false}>{value.price.toFixed(2)}</Subheading>
-            <Label style={{color: changeColor}}>
-              {changePrefix}
-              {value.changePercent}%
-            </Label>
+            <AssetChangeLabel asset={value} variant="value" />
           </Flex>
         </Flex>
       </Swipeable>

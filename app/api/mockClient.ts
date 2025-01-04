@@ -1,7 +1,10 @@
+import {Article, ArticleSchema} from '../models/Article';
 import {Asset, AssetSchema} from '../models/Asset';
 import {SearchResultSchema} from '../models/SearchResult';
+import {parseCompactDateTime} from '../utils/formatter';
 import {
   GlobalQuoteResponse,
+  NewsSentimentResponse,
   OverviewResponse,
   SymbolSearchResponse,
 } from './types';
@@ -54,4 +57,25 @@ export async function getAsset(symbol: string) {
     type: overviewJson.AssetType,
     currency: overviewJson.Currency,
   } as Asset);
+}
+
+export async function getNews(symbol: string) {
+  console.log(`Mock fetching articles for symbol: ${symbol}`);
+
+  const response = await fetch(
+    'https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&apikey=demo',
+  );
+
+  const {feed}: NewsSentimentResponse = await response.json();
+
+  return feed.map(article =>
+    ArticleSchema.parse({
+      publishedAt: parseCompactDateTime(article.time_published).toISOString(),
+      source: article.source,
+      summary: article.summary,
+      symbol,
+      title: article.title,
+      url: article.url,
+    } as Article),
+  );
 }

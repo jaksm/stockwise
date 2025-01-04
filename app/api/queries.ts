@@ -36,3 +36,15 @@ export function useGetAssetsQuery(
     keepPreviousData: true,
   });
 }
+
+export function useGetNewsQuery(symbols: string[]) {
+  const queryKey = `get-news-[${symbols.join(',')}]`;
+  const enabled = symbols.length > 0;
+  const queryFn = () => Promise.all(symbols.map(client.getNews));
+
+  return useQuery(queryKey, {
+    queryFn,
+    enabled,
+    keepPreviousData: true,
+  });
+}
