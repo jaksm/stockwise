@@ -18,7 +18,7 @@ export function AddToWatchlist({navigation}: AddToWatchlistProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const searchQuery = useSearchAssetsQuery(searchTerm);
 
-  const watchlist = useWatchlistStore('default-watchlist');
+  const watchlist = useWatchlistStore();
 
   const filteredResults = searchQuery.data?.filter(
     result => !watchlist.symbols.includes(result.symbol),

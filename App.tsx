@@ -7,6 +7,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {QueryClient, QueryClientProvider} from 'react-query';
 
 import {RootStack} from './app/RootStack';
+import {WatchlistProvider} from './app/hooks/useWatchlistStore';
 
 const queryClient = new QueryClient();
 
@@ -15,7 +16,9 @@ function App(): React.JSX.Element {
     <GestureHandlerRootView>
       <QueryClientProvider client={queryClient}>
         <NavigationContainer>
-          <RootStack />
+          <WatchlistProvider>
+            <RootStack />
+          </WatchlistProvider>
         </NavigationContainer>
       </QueryClientProvider>
     </GestureHandlerRootView>

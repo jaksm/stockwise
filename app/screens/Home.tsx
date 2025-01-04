@@ -14,7 +14,7 @@ type HomeProps = {
 };
 
 export function Home({navigation}: HomeProps) {
-  const watchlist = useWatchlistStore('default-watchlist');
+  const watchlist = useWatchlistStore();
   const watchlistQuery = useGetAssetsQuery(watchlist.symbols);
 
   return (

@@ -9,7 +9,7 @@ export const WatchlistRefreshButton = () => {
   const [isLive, setIsLive] = useState(false);
   const [isLongPressing, setIsLongPressing] = useState(false);
 
-  const watchlist = useWatchlistStore('default-watchlist');
+  const watchlist = useWatchlistStore();
   const watchlistQuery = useGetAssetsQuery(watchlist.symbols, {isLive});
 
   const onPress = () => {
