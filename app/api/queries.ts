@@ -9,10 +9,11 @@ console.log(`Mocking enabled: ${MOCK}`);
 const client = MOCK === 'true' ? mockApi : api;
 
 export function useSearchAssetsQuery(searchTerm: string) {
-  const queryKey = `search-assets-[${searchTerm}]`;
+  const queryKey = ['search-assets', searchTerm];
   const enabled = searchTerm.length > 0;
 
-  return useQuery(queryKey, {
+  return useQuery({
+    queryKey,
     queryFn: () => client.symbolSearch(searchTerm),
     refetchOnMount: false,
     refetchOnReconnect: false,
@@ -25,11 +26,12 @@ export function useGetAssetsQuery(
   symbols: string[],
   options?: {isLive?: boolean},
 ) {
-  const queryKey = `get-assets-[${symbols.join(',')}]`;
+  const queryKey = ['get-assets', ...symbols];
   const enabled = symbols.length > 0;
   const queryFn = () => Promise.all(symbols.map(client.getAsset));
 
-  return useQuery(queryKey, {
+  return useQuery({
+    queryKey,
     queryFn,
     enabled,
     refetchInterval: options?.isLive ? 1_000 : undefined,
@@ -38,11 +40,12 @@ export function useGetAssetsQuery(
 }
 
 export function useGetNewsQuery(symbols: string[]) {
-  const queryKey = `get-news-[${symbols.join(',')}]`;
+  const queryKey = ['get-news', ...symbols];
   const enabled = symbols.length > 0;
   const queryFn = () => Promise.all(symbols.map(client.getNews));
 
-  return useQuery(queryKey, {
+  return useQuery({
+    queryKey,
     queryFn,
     enabled,
     keepPreviousData: true,
