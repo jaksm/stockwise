@@ -1,4 +1,6 @@
 import {formatDistanceToNowStrict} from 'date-fns';
+import {TimeSeriesMonthlyResponse} from '../api/types';
+import {TimeSeriesPointSchema, TimeSeriesSchema} from '../models/TimeSeries';
 
 export function formatTimeAgo(isoString: string): string {
   return formatDistanceToNowStrict(new Date(isoString), {addSuffix: true});
@@ -23,4 +25,31 @@ export function parseCompactDateTime(dateTimeString: string): Date {
   const second = parseInt(dateTimeString.slice(13, 15), 10);
 
   return new Date(year, month, day, hour, minute, second);
+}
+
+export function formatTimeSeriesResponse(
+  series: TimeSeriesMonthlyResponse['Monthly Time Series'],
+) {
+  const timeSeriesPoints = Object.entries(series)
+    .slice(0, 12)
+    .map(([dateString, point]) => {
+      const date = dateString.includes(' ')
+        ? new Date(dateString)
+        : new Date(`${dateString} 00:00:00`);
+
+      const timeSeriesPoint = {
+        open: Number(point['1. open']),
+        high: Number(point['2. high']),
+        low: Number(point['3. low']),
+        close: Number(point['4. close']),
+        volume: Number(point['5. volume']),
+        timestamp: date.getTime(),
+      };
+
+      TimeSeriesPointSchema.parse(timeSeriesPoint);
+
+      return timeSeriesPoint;
+    });
+
+  return TimeSeriesSchema.parse(timeSeriesPoints);
 }

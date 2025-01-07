@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import {TimeSeriesSchema} from './TimeSeries';
 
 export const AssetSchema = z.object({
   symbol: z.string(),
@@ -8,6 +9,7 @@ export const AssetSchema = z.object({
   changePercent: z.number(),
   name: z.string(),
   currency: z.string(),
+  timeSeriesMonthly: TimeSeriesSchema,
 });
 
 export type Asset = z.infer<typeof AssetSchema>;

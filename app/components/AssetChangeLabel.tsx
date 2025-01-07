@@ -1,4 +1,3 @@
-import {TrendingDown, TrendingUp} from 'lucide-react-native';
 import React from 'react';
 import {useTheme} from '../hooks/useTheme';
 import {Asset} from '../models/Asset';
@@ -20,12 +19,8 @@ export function AssetChangeLabel({asset, variant}: AssetChangeLabelProps) {
 
   return (
     <Flex direction="row" align="center" gap="1">
-      {isPositiveChange ? (
-        <TrendingUp color={theme.colors.success} size={theme.spacing['4']} />
-      ) : (
-        <TrendingDown color={theme.colors.error} size={theme.spacing['4']} />
-      )}
       <Label style={{color: changeColor}}>
+        {isPositiveChange ? '+' : '-'}
         {value}
         {variant === 'percent' ? '%' : ''}
       </Label>

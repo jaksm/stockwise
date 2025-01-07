@@ -1,12 +1,16 @@
 import {Article, ArticleSchema} from '../models/Article';
 import {Asset, AssetSchema} from '../models/Asset';
 import {SearchResultSchema} from '../models/SearchResult';
-import {parseCompactDateTime} from '../utils/formatter';
+import {
+  formatTimeSeriesResponse,
+  parseCompactDateTime,
+} from '../utils/formatter';
 import {
   GlobalQuoteResponse,
   NewsSentimentResponse,
   OverviewResponse,
   SymbolSearchResponse,
+  TimeSeriesMonthlyResponse,
 } from './types';
 
 export async function symbolSearch(keywords: string) {
@@ -32,19 +36,25 @@ export async function symbolSearch(keywords: string) {
 export async function getAsset(symbol: string) {
   console.log(`Mock fetching asset with symbol: ${symbol}`);
 
-  const [globalQuoteResponse, overviewResponse] = await Promise.all([
-    fetch(
-      'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo',
-    ),
-    fetch(
-      'https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo',
-    ),
-  ]);
+  const [globalQuoteResponse, overviewResponse, timeSeriesMonthly] =
+    await Promise.all([
+      fetch(
+        'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo',
+      ),
+      fetch(
+        'https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo',
+      ),
+      fetch(
+        'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=IBM&apikey=demo',
+      ),
+    ]);
 
-  const [globalQuoteJson, overviewJson] = await Promise.all([
-    globalQuoteResponse.json() as Promise<GlobalQuoteResponse>,
-    overviewResponse.json() as Promise<OverviewResponse>,
-  ]);
+  const [globalQuoteJson, overviewJson, timeSeriesMonthlyJson] =
+    await Promise.all([
+      globalQuoteResponse.json() as Promise<GlobalQuoteResponse>,
+      overviewResponse.json() as Promise<OverviewResponse>,
+      timeSeriesMonthly.json() as Promise<TimeSeriesMonthlyResponse>,
+    ]);
 
   return AssetSchema.parse({
     change: Number(globalQuoteJson['Global Quote']['09. change']),
@@ -56,6 +66,9 @@ export async function getAsset(symbol: string) {
     symbol: symbol,
     type: overviewJson.AssetType,
     currency: overviewJson.Currency,
+    timeSeriesMonthly: formatTimeSeriesResponse(
+      timeSeriesMonthlyJson['Monthly Time Series'],
+    ),
   } as Asset);
 }
 
