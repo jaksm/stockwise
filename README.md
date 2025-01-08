@@ -1,79 +1,319 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# StockWise App
 
-# Getting Started
+StockWise is a React Native mobile app for monitoring stock investments and market data. It provides real-time watchlist, detailed asset information, and business news tracking. Key capabilities include interactive price charts, asset statistics, and a news feed for watched stocks. The app uses React Query for efficient data fetching and caching, with AsyncStorage for persistent watchlist storage.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Key features
 
-## Step 1: Start the Metro Server
+<div style="display: flex; align-items: flex-start; gap: 24px;">
+  <img src="./screenshots/home.png" alt="Home screen" width="300" />
+  
+  <div>
+    <h3>Watchlist</h3>
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- Real-time watchlist monitoring with automatic price updates
+- Stocks grouped by asset type (e.g. Equity, ETF)
+- Quick access to key metrics for each stock:
+- Current price
+- Price change (value and percentage)
+- Mini price chart showing monthly performance
+- Company name and symbol
+- Pull-to-refresh functionality to manually update prices
+- Swipe-to-remove stocks from watchlist
+- Floating action button to easily add new stocks
+- News feed accessible via bottom sheet showing latest articles for watched stocks
+- Error handling and loading states for smooth user experience
 
-To start Metro, run the following command from the _root_ of your React Native project:
+  </div>
+</div>
 
-```bash
-# using npm
-npm start
+<div style="display: flex; align-items: flex-start; gap: 24px;">  
+  <div>
+    <h3>Adding Assets</h3>
 
-# OR using Yarn
-yarn start
-```
+- Search functionality with debounced input to prevent excessive API calls
+- Real-time search results as you type
+- Results grouped by asset type (Equity, ETF, etc.)
+- Auto-focus on search input when screen opens
+- Filtered results to only show assets not already in watchlist
+- Loading states and error handling for search results
+- Persistent storage of watchlist using AsyncStorage
+- Optimized queries with React Query for caching and state management
+- Back button to return to watchlist
+- Automatic navigation back after adding asset
+- Add to watchlist with a single tap
+- Proper keyboard handling and input validation
 
-## Step 2: Start your Application
+    </div>
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+   <img src="./screenshots/add-to-watchlist.png" alt="Home screen" width="300" />
+  </div>
 
-### For Android
+<div style="display: flex; align-items: flex-start; gap: 24px;">  
+   <img src="./screenshots/asset-details.png" alt="Home screen" width="300" />
 
-```bash
-# using npm
-npm run android
+  <div>
+    <h3>Asset Details</h3>
 
-# OR using Yarn
-yarn android
-```
+- Interactive price chart with multiple time intervals (week/month/year)
+- Real-time price and change indicators
+- Detailed asset statistics:
+  - Open price
+  - High price
+  - Low price
+  - Close price
+  - Volume
+- Asset metadata including:
+  - Current price with change indicator
+  - Symbol and company name
+- Interactive chart features:
+  - Touch tracking with value indicators
+  - Gradient area fill under line
+  - Date formatting based on selected interval
+- Business news feed specific to the asset
+- Loading states during data fetching
+- Cached queries for optimal performance
 
-### For iOS
+    </div>
+  </div>
 
-```bash
-# using npm
-npm run ios
+## Architecture
 
-# OR using Yarn
-yarn ios
-```
+The app uses a layered architecture that separates concerns and ensures both compile-time and runtime type safety:
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+### Domain Layer
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+The domain layer defines the core business models using Zod validation schemas:
 
-## Step 3: Modifying your App
+1. **Asset Model** (`models/Asset.ts`)
 
-Now that you have successfully run the app, let's modify it.
+   - Represents financial asset data like stocks and ETFs
+   - Includes price, change, volume and other market data
+   - Validates all required fields at runtime
+   - Used throughout the UI for displaying asset details
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+2. **Article Model** (`models/Article.ts`)
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+   - Defines structure for news articles and company updates
+   - Contains source, title, summary and publishing metadata
+   - Ensures consistent article data across the app
 
-## Congratulations! :tada:
+3. **Search Result Model** (`models/SearchResult.ts`)
 
-You've successfully run and modified your React Native App. :partying_face:
+   - Represents asset search results
+   - Contains basic asset metadata for search listings
+   - Validated subset of full asset data
 
-### Now what?
+4. **Time Series Model** (`models/TimeSeries.ts`)
+   - Defines price history data points
+   - Used for charting and historical analysis
+   - Validates timestamp and OHLCV data
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+### API Layer
 
-# Troubleshooting
+The API integration is split into three main parts:
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+1. **Type Definitions** (`types.ts`)
 
-# Learn More
+   - Defines TypeScript interfaces for all API responses
+   - Maps external API types to domain models
+   - Defines configuration types for API parameters
 
-To learn more about React Native, take a look at the following resources:
+2. **API Client** (`client.ts`)
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+   - Handles direct communication with Alpha Vantage API endpoints
+   - Implements data fetching and response parsing
+   - Validates responses against domain schemas
+   - Provides strongly typed methods for each API route:
+     - `/query?function=SYMBOL_SEARCH` - Asset search
+     - `/query?function=GLOBAL_QUOTE` - Real-time quotes
+     - `/query?function=OVERVIEW` - Company details
+     - `/query?function=TIME_SERIES_DAILY` - Daily price data
+     - `/query?function=TIME_SERIES_MONTHLY` - Monthly price data
+     - `/query?function=NEWS_SENTIMENT` - Company news and sentiment
+
+3. **React Query Layer** (`queries.ts`)
+   - Implements React Query hooks that wrap the API client
+   - Handles caching, refetching, and server state management
+   - Provides hooks like:
+     - `useSearchAssetsQuery`
+     - `useGetAssetDetailsQuery`
+     - `useGetAssetNewsQuery`
+     - `useGetStats`
+
+This architecture provides several benefits:
+
+- Full type safety from API response to UI through domain models
+- Runtime validation ensures data integrity
+- Domain models are independent of data sources
+- Easy to swap API providers by updating only the API layer
+- Efficient caching and background updates
+- Clear separation of concerns
+- Easy mocking for development/testing
+
+### UI Layer
+
+The UI layer follows a component-based architecture with clear separation between reusable and feature-specific components. It uses a centralized theming system for consistent styling across the app.
+
+1. **Theme System** (`theme.ts` & `useTheme.ts`)
+
+   - Centralized theme configuration with light/dark mode support
+   - Defines design tokens for:
+     - Colors and text styles
+     - Spacing and layout
+     - Typography and fonts
+     - Border radiuses
+   - Accessed via `useTheme` hook throughout the app
+   - Minimal implementation focused on core concepts
+
+2. **Reusable Components** (`components/ui/`)
+
+   - Generic, highly reusable UI primitives
+   - Follow atomic design principles
+   - Components include:
+     - `Flex` - Flexible layout component
+     - `IconButton` - Standardized icon buttons
+     - `ToggleGroup` - Segmented controls
+     - `typography` - Text components (Title, Heading, Body etc)
+   - Consistently themed using `useTheme`
+   - Props follow common patterns
+
+3. **Feature Components** (`components/`)
+
+   - Specific to app features and business logic
+   - Composed from reusable components
+   - Follow consistent naming patterns:
+     - Lists: `[Feature]List` & `[Feature]ListItem`
+     - Charts: `[Feature]Chart`
+     - Buttons: `[Feature]Button`
+   - Examples include:
+     - Watchlist components
+     - Search components
+     - Asset details components
+     - News components
+
+4. **Navigation Theming** (`useRootStackScreenOptions.ts`)
+
+   - Consistent header styling across screens
+   - Integrates with React Navigation
+   - Uses same theme system as components
+
+5. **Screen Components** (`screens/`)
+
+   - **RootStack** (`RootStack.tsx`)
+
+     - Defines app navigation structure using React Navigation
+     - Configures screen transitions and headers
+     - Manages navigation types and params
+     - Sets up initial route and screen options
+
+   - **Home Screen** (`Home.tsx`)
+
+     - Main watchlist view with real-time asset monitoring
+     - Implements pull-to-refresh and swipe-to-remove
+     - Bottom sheet for news feed
+     - FAB for adding new assets
+     - Uses watchlist store for state management
+
+   - **Asset Details Screen** (`AssetDetails.tsx`)
+
+     - Displays detailed asset information and charts
+     - Interactive price chart with interval selection
+     - Real-time price updates and statistics
+     - Business news feed specific to asset
+     - Uses multiple queries for data fetching
+
+   - **Add to Watchlist Screen** (`AddToWatchlist.tsx`)
+     - Search interface for finding new assets
+     - Real-time search results with debouncing
+     - Filters out already watched assets
+     - Direct add-to-watchlist functionality
+     - Auto-focus search and back navigation
+
+Key Benefits:
+
+- Consistent styling through centralized theming
+- Clear component organization and naming
+- High reusability of UI primitives
+- Easy dark mode support
+- Type-safe props and theme values
+- Simplified maintenance and updates
+- Clear patterns for new components
+- Modular screen architecture
+- Efficient state management
+- Smooth navigation flow
+
+### Environment Variables
+
+The app uses environment variables for API configuration and mocking. These are managed through:
+
+- `.env` file (create from `.env.example`) with the following variables:
+
+  - `API_URL`: Alpha Vantage API base URL
+  - `API_KEY`: Your Alpha Vantage API key
+  - `MOCK`: Enable/disable mock data ('true'/'false')
+
+- Type definitions in `env.d.ts` ensure type safety when using env vars
+- `babel-plugin-react-native-dotenv` configured in `babel.config.js` enables importing from `@env`
+- API client (`client.ts`) uses env vars for requests
+- Query hooks (`queries.ts`) conditionally use mock or real API based on `MOCK` setting
+
+**Important:** The free tier of Alpha Vantage API has a limit of 25 requests per day. It's recommended to:
+
+1. Set `MOCK=true` in `.env` for development to use mock client
+2. Only set `MOCK=false` when testing with real API data
+3. Get an API key from [Alpha Vantage](https://www.alphavantage.co) if using real data
+
+## Running the App
+
+To run the app locally, follow these steps:
+
+### Prerequisites
+
+- Node.js 18.18 or newer
+- Watchman (for macOS)
+- For iOS:
+  - Xcode 10 or newer
+  - CocoaPods
+  - Command Line Tools
+  - iOS Simulator
+- For Android:
+  - Android Studio
+  - JDK 17
+  - Android SDK
+  - Android Virtual Device
+
+### iOS Setup & Run
+
+1. Install dependencies (this will also install iOS pods and link assets):
+
+   ```bash
+   npm install
+   ```
+
+2. Run on iOS simulator:
+   ```bash
+   npm run ios
+   ```
+
+### Android Setup & Run
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Run on Android emulator:
+   ```bash
+   npm run android
+   ```
+
+### Available Scripts
+
+- `npm start` - Start Metro bundler with cache reset
+- `npm run ios` - Run on iOS simulator with cache reset
+- `npm run android` - Run on Android emulator with cache reset
+- `npm run lint` - Run ESLint
+- `npm test` - Run Jest tests
+- `npm run pod-install` - Install iOS pods
+- `npm run link-assets` - Link assets
