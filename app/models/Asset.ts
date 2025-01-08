@@ -10,6 +10,12 @@ export const AssetSchema = z.object({
   name: z.string(),
   currency: z.string(),
   timeSeriesMonthly: TimeSeriesSchema,
+  open: z.number(),
+  high: z.number(),
+  low: z.number(),
+  close: z.number(),
+  volume: z.number(),
+  latestTradingDay: z.string(),
 });
 
 export type Asset = z.infer<typeof AssetSchema>;

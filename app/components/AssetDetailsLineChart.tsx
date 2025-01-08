@@ -7,17 +7,19 @@ import {
   vec,
 } from '@shopify/react-native-skia';
 import {format} from 'date-fns';
-import React, {memo, useMemo, useState} from 'react';
+import React, {memo, useMemo} from 'react';
 import {SharedValue, useDerivedValue} from 'react-native-reanimated';
 import {Area, CartesianChart, Line, useChartPressState} from 'victory-native';
-import {useGetStats} from '../api/queries';
 import {TimeSeriesInterval} from '../api/types';
 import {useTheme} from '../hooks/useTheme';
+import {TimeSeries} from '../models/TimeSeries';
 import {Flex} from './ui/Flex';
 import {ToggleGroup} from './ui/ToggleGroup';
 
 interface AssetDetailsLineChartProps {
-  symbol: string;
+  series: TimeSeries;
+  interval: TimeSeriesInterval;
+  onChangeInterval: (interval: TimeSeriesInterval) => void;
 }
 
 const inter = require('../../assets/Inter.ttf');
@@ -29,12 +31,9 @@ const DATE_FORMAT = {
 } satisfies Record<TimeSeriesInterval, string>;
 
 export const AssetDetailsLineChart = memo(
-  ({symbol}: AssetDetailsLineChartProps) => {
+  ({series, interval, onChangeInterval}: AssetDetailsLineChartProps) => {
     const theme = useTheme();
     const font = useFont(inter, 12);
-
-    const [interval, setInterval] = useState<TimeSeriesInterval>('month');
-    const {data, isLoading} = useGetStats(symbol, {interval});
 
     const press = useChartPressState({x: 0, y: {high: 0}});
 
@@ -43,39 +42,34 @@ export const AssetDetailsLineChart = memo(
         {
           key: 'week',
           label: 'Week',
-          onPress: () => setInterval(() => 'week'),
+          onPress: () => onChangeInterval('week'),
         },
         {
           key: 'month',
           label: 'Month',
-          onPress: () => setInterval(() => 'month'),
+          onPress: () => onChangeInterval('month'),
         },
         {
           key: 'year',
           label: 'Year',
-          onPress: () => setInterval(() => 'year'),
+          onPress: () => onChangeInterval('year'),
         },
       ],
-      [],
+      [onChangeInterval],
     );
 
-    if (!data || isLoading || !font) {
-      return null;
-    }
-
     return (
-      <Flex gap="8">
+      <Flex gap="8" style={{height: theme.spacing['80']}}>
         <Flex align="center">
           <ToggleGroup active={interval} options={toggleGroupOptions} />
         </Flex>
 
         <Flex style={{height: theme.spacing[64]}}>
           <CartesianChart
-            data={data}
+            data={series}
             xKey="timestamp"
             yKeys={['high']}
             padding={{bottom: 12}}
-            domainPadding={{left: 12}}
             chartPressState={press.state}
             axisOptions={{
               font,
@@ -89,16 +83,12 @@ export const AssetDetailsLineChart = memo(
             {({points, chartBounds}) => (
               <>
                 <Line
-                  animate={{type: 'spring'}}
                   antiAlias
                   points={points.high}
                   color={theme.colors.primary}
                   strokeWidth={3}
                 />
-                <Area
-                  points={points.high}
-                  y0={chartBounds.bottom}
-                  animate={{type: 'timing', duration: 300}}>
+                <Area points={points.high} y0={chartBounds.bottom}>
                   <LinearGradient
                     start={vec(0, 0)}
                     end={vec(0, theme.spacing[64])}

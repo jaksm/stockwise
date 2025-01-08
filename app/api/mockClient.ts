@@ -70,6 +70,14 @@ export async function getAsset(symbol: string) {
       timeSeriesMonthlyJson['Monthly Time Series'],
       'month',
     ),
+    open: Number(globalQuoteJson['Global Quote']['02. open']),
+    high: Number(globalQuoteJson['Global Quote']['03. high']),
+    low: Number(globalQuoteJson['Global Quote']['04. low']),
+    volume: Number(globalQuoteJson['Global Quote']['06. volume']),
+    close: Number(globalQuoteJson['Global Quote']['08. previous close']),
+    latestTradingDay: new Date(
+      globalQuoteJson['Global Quote']['07. latest trading day'],
+    ).toISOString(),
   } as Asset);
 }
 
