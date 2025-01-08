@@ -28,13 +28,11 @@ export function useGetAssetsQuery(
   options?: {isLive?: boolean},
 ) {
   const queryKey = ['get-assets', ...symbols];
-  const enabled = symbols.length > 0;
   const queryFn = () => Promise.all(symbols.map(client.getAsset));
 
   return useQuery({
     queryKey,
     queryFn,
-    enabled,
     refetchInterval: options?.isLive ? 1_000 : undefined,
     keepPreviousData: true,
   });
@@ -68,13 +66,11 @@ export function useGetAssetNewsQuery(symbol: string) {
 
 export function useGetNewsQuery(symbols: string[]) {
   const queryKey = ['get-news', ...symbols];
-  const enabled = symbols.length > 0;
   const queryFn = () => Promise.all(symbols.map(client.getNews));
 
   return useQuery({
     queryKey,
     queryFn,
-    enabled,
     keepPreviousData: true,
   });
 }
