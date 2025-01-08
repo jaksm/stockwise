@@ -11,7 +11,7 @@ import {useTheme} from '../hooks/useTheme';
 import {Asset} from '../models/Asset';
 import {Flex} from './ui/Flex';
 import {Body, Subheading} from './ui/typography';
-import {WatchlistItem} from './WatchListItem';
+import {WatchlistItem} from './WatchlistItem';
 
 type WatchlistProps = {
   data?: Asset[];

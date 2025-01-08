@@ -3,7 +3,7 @@ import React from 'react';
 import type {RootStackNavigation} from '../RootStack';
 import {useGetAssetsQuery} from '../api/queries';
 import {NewsBottomSheet} from '../components/NewsBottomSheet';
-import {Watchlist} from '../components/WatchList';
+import {Watchlist} from '../components/Watchlist';
 import {WatchlistRefreshButton} from '../components/WatchlistRefreshButton';
 import {Flex} from '../components/ui/Flex';
 import {FloatingActionButton} from '../components/ui/FloatingActionButton';
