@@ -250,7 +250,7 @@ The app uses environment variables for API configuration and mocking. These are 
 
   - `API_URL`: Alpha Vantage API base URL
   - `API_KEY`: Your Alpha Vantage API key
-  - `MOCK`: Enable/disable mock data ('true'/'false')
+  - `MOCK`: Enable/disable mock api client ('true'/'false')
 
 - Type definitions in `env.d.ts` ensure type safety when using env vars
 - `babel-plugin-react-native-dotenv` configured in `babel.config.js` enables importing from `@env`
