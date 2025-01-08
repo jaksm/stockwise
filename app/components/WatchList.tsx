@@ -18,7 +18,7 @@ type WatchlistProps = {
   isError?: boolean;
   isLoading?: boolean;
   isRefreshing?: boolean;
-  onItemPress?: (item: Asset) => void;
+  onPressItem?: (item: Asset) => void;
   onRemoveItem?: (item: Asset) => void;
   onRefresh?: () => void;
 };
@@ -34,7 +34,7 @@ export function Watchlist({
   isLoading,
   isRefreshing,
   onRefresh,
-  onItemPress,
+  onPressItem,
   onRemoveItem,
 }: WatchlistProps) {
   const theme = useTheme();
@@ -71,11 +71,11 @@ export function Watchlist({
     ({item}) => (
       <WatchlistItem
         value={item}
-        onPress={() => onItemPress?.(item)}
+        onPress={() => onPressItem?.(item)}
         onRemove={() => onRemoveItem?.(item)}
       />
     ),
-    [onItemPress, onRemoveItem],
+    [onPressItem, onRemoveItem],
   );
 
   const renderSectionHeader = ({section}: {section: Section}) => (

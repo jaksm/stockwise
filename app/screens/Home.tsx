@@ -11,6 +11,7 @@ import {IconButton} from '../components/ui/IconButton';
 import {Title} from '../components/ui/typography';
 import {useBottomSheet} from '../hooks/useBottomSheet';
 import {useWatchlistStore} from '../hooks/useWatchlistStore';
+import {Asset} from '../models/Asset';
 
 type HomeProps = {
   navigation: RootStackNavigation;
@@ -21,6 +22,13 @@ export function Home({navigation}: HomeProps) {
   const watchlistQuery = useGetAssetsQuery(watchlist.symbols);
 
   const newsSheet = useBottomSheet();
+
+  const onPressItem = (item: Asset) =>
+    navigation.navigate('AssetDetails', {symbol: item.symbol});
+
+  const onRemoveItem = (item: Asset) => watchlist.removeSymbol(item.symbol);
+
+  const onAddPress = () => navigation.navigate('AddToWatchlist');
 
   return (
     <>
@@ -40,15 +48,13 @@ export function Home({navigation}: HomeProps) {
           isError={watchlistQuery.isError}
           isLoading={watchlistQuery.isLoading}
           isRefreshing={watchlistQuery.isRefetching}
+          onPressItem={onPressItem}
           onRefresh={watchlistQuery.refetch}
-          onRemoveItem={item => watchlist.removeSymbol(item.symbol)}
+          onRemoveItem={onRemoveItem}
         />
       </Flex>
 
-      <FloatingActionButton
-        icon={<Plus />}
-        onPress={() => navigation.navigate('AddToWatchlist')}
-      />
+      <FloatingActionButton icon={<Plus />} onPress={onAddPress} />
 
       <NewsBottomSheet {...newsSheet.props} assets={watchlistQuery.data} />
     </>

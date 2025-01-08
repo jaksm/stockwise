@@ -111,6 +111,43 @@ export type NewsSentimentResponse = {
   }>;
 };
 
+export type GetStatsOptions = {interval: TimeSeriesInterval};
+
+export type TimeSeriesInterval = 'week' | 'month' | 'year';
+
+export const TIME_SERIES_FUNCTION = {
+  week: 'TIME_SERIES_DAILY',
+  month: 'TIME_SERIES_DAILY',
+  year: 'TIME_SERIES_MONTHLY',
+} satisfies Record<TimeSeriesInterval, string>;
+
+export const TIME_SERIES_POINTS_ACCESSOR = {
+  week: 'Time Series (Daily)',
+  month: 'Time Series (Daily)',
+  year: 'Monthly Time Series',
+} satisfies Record<TimeSeriesInterval, string>;
+
+export type TimeSeriesPointsResponse = {
+  [key: string]: {
+    '1. open': string;
+    '2. high': string;
+    '3. low': string;
+    '4. close': string;
+    '5. volume': string;
+  };
+};
+
+export type TimeSeriesDailyResponse = {
+  'Meta Data': {
+    '1. Information': string;
+    '2. Symbol': string;
+    '3. Last Refreshed': string;
+    '4. Output Size': string;
+    '5. Time Zone': string;
+  };
+  'Time Series (Daily)': TimeSeriesPointsResponse;
+};
+
 export type TimeSeriesMonthlyResponse = {
   'Meta Data': {
     '1. Information': string;
@@ -118,13 +155,5 @@ export type TimeSeriesMonthlyResponse = {
     '3. Last Refreshed': string;
     '4. Time Zone': string;
   };
-  'Monthly Time Series': {
-    [key: string]: {
-      '1. open': string;
-      '2. high': string;
-      '3. low': string;
-      '4. close': string;
-      '5. volume': string;
-    };
-  };
+  'Monthly Time Series': TimeSeriesPointsResponse;
 };

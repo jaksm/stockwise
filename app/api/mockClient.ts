@@ -6,16 +6,18 @@ import {
   parseCompactDateTime,
 } from '../utils/formatter';
 import {
+  GetStatsOptions,
   GlobalQuoteResponse,
   NewsSentimentResponse,
   OverviewResponse,
   SymbolSearchResponse,
+  TIME_SERIES_FUNCTION,
+  TIME_SERIES_POINTS_ACCESSOR,
   TimeSeriesMonthlyResponse,
 } from './types';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function symbolSearch(keywords: string) {
-  console.log(`Mock search with keywords: ${keywords}`);
-
   const response = await fetch(
     'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=tesco&apikey=demo',
   );
@@ -34,8 +36,6 @@ export async function symbolSearch(keywords: string) {
 }
 
 export async function getAsset(symbol: string) {
-  console.log(`Mock fetching asset with symbol: ${symbol}`);
-
   const [globalQuoteResponse, overviewResponse, timeSeriesMonthly] =
     await Promise.all([
       fetch(
@@ -68,13 +68,12 @@ export async function getAsset(symbol: string) {
     currency: overviewJson.Currency,
     timeSeriesMonthly: formatTimeSeriesResponse(
       timeSeriesMonthlyJson['Monthly Time Series'],
+      'month',
     ),
   } as Asset);
 }
 
 export async function getNews(symbol: string) {
-  console.log(`Mock fetching articles for symbol: ${symbol}`);
-
   const response = await fetch(
     'https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&apikey=demo',
   );
@@ -90,5 +89,20 @@ export async function getNews(symbol: string) {
       title: article.title,
       url: article.url,
     } as Article),
+  );
+}
+
+export async function getStats(symbol: string, options: GetStatsOptions) {
+  const response = await fetch(
+    `https://www.alphavantage.co/query?function=${
+      TIME_SERIES_FUNCTION[options.interval]
+    }&symbol=IBM&apikey=demo`,
+  );
+
+  const json = await response.json();
+
+  return formatTimeSeriesResponse(
+    json[TIME_SERIES_POINTS_ACCESSOR[options.interval]],
+    options.interval,
   );
 }

@@ -1,5 +1,5 @@
 import {formatDistanceToNowStrict} from 'date-fns';
-import {TimeSeriesMonthlyResponse} from '../api/types';
+import {TimeSeriesInterval, TimeSeriesPointsResponse} from '../api/types';
 import {TimeSeriesPointSchema, TimeSeriesSchema} from '../models/TimeSeries';
 
 export function formatTimeAgo(isoString: string): string {
@@ -28,10 +28,10 @@ export function parseCompactDateTime(dateTimeString: string): Date {
 }
 
 export function formatTimeSeriesResponse(
-  series: TimeSeriesMonthlyResponse['Monthly Time Series'],
+  series: TimeSeriesPointsResponse,
+  interval: TimeSeriesInterval,
 ) {
   const timeSeriesPoints = Object.entries(series)
-    .slice(0, 12)
     .map(([dateString, point]) => {
       const date = dateString.includes(' ')
         ? new Date(dateString)
@@ -49,7 +49,28 @@ export function formatTimeSeriesResponse(
       TimeSeriesPointSchema.parse(timeSeriesPoint);
 
       return timeSeriesPoint;
-    });
+    })
+    .sort((a, b) => a.timestamp - b.timestamp);
 
-  return TimeSeriesSchema.parse(timeSeriesPoints);
+  let filteredPoints = timeSeriesPoints;
+
+  if (interval === 'week') {
+    // Get last 7 days
+    filteredPoints = timeSeriesPoints.slice(-7);
+  } else if (interval === 'month') {
+    // Get points for current month
+    const lastPoint = timeSeriesPoints[timeSeriesPoints.length - 1];
+    const lastDate = new Date(lastPoint.timestamp);
+    const daysInMonth = new Date(
+      lastDate.getFullYear(),
+      lastDate.getMonth() + 1,
+      0,
+    ).getDate();
+    filteredPoints = timeSeriesPoints.slice(-daysInMonth);
+  } else if (interval === 'year') {
+    // Get 12 monthly points
+    filteredPoints = timeSeriesPoints.slice(-12);
+  }
+
+  return TimeSeriesSchema.parse(filteredPoints);
 }

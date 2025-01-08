@@ -7,10 +7,13 @@ import {
   parseCompactDateTime,
 } from '../utils/formatter';
 import {
+  GetStatsOptions,
   GlobalQuoteResponse,
   NewsSentimentResponse,
   OverviewResponse,
   SymbolSearchResponse,
+  TIME_SERIES_FUNCTION,
+  TIME_SERIES_POINTS_ACCESSOR,
   TimeSeriesMonthlyResponse,
 } from './types';
 
@@ -65,6 +68,7 @@ export async function getAsset(symbol: string) {
     currency: overviewJson.Currency,
     timeSeriesMonthly: formatTimeSeriesResponse(
       timeSeriesMonthlyJson['Monthly Time Series'],
+      'month',
     ),
   } as Asset);
 }
@@ -85,5 +89,20 @@ export async function getNews(symbol: string) {
       title: article.title,
       url: article.url,
     } as Article),
+  );
+}
+
+export async function getStats(symbol: string, options: GetStatsOptions) {
+  const response = await fetch(
+    `${API_URL}/query?function=${
+      TIME_SERIES_FUNCTION[options.interval]
+    }&symbol=${symbol}&apikey=${API_KEY}`,
+  );
+
+  const json = await response.json();
+
+  return formatTimeSeriesResponse(
+    json[TIME_SERIES_POINTS_ACCESSOR[options.interval]],
+    options.interval,
   );
 }
