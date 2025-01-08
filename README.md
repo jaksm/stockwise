@@ -5,7 +5,7 @@ StockWise is a React Native mobile app for monitoring stock investments and mark
 ## Key features
 
 <div style="display: flex; align-items: flex-start; gap: 24px;">
-  <img src="./screenshots/home.png" alt="Home screen" width="200" />
+  <img src="./screenshots/home.png" alt="Home screen" width="350" />
   
   <div>
     <h3>Watchlist</h3>
@@ -27,6 +27,8 @@ StockWise is a React Native mobile app for monitoring stock investments and mark
 </div>
 
 <div style="display: flex; align-items: flex-start; gap: 24px;">  
+  <img src="./screenshots/add-to-watchlist.png" alt="Home screen" width="350" />
+  
   <div>
     <h3>Adding Assets</h3>
 
@@ -44,12 +46,10 @@ StockWise is a React Native mobile app for monitoring stock investments and mark
 - Proper keyboard handling and input validation
 
     </div>
-
-   <img src="./screenshots/add-to-watchlist.png" alt="Home screen" width="200" />
   </div>
 
 <div style="display: flex; align-items: flex-start; gap: 24px;">  
-   <img src="./screenshots/asset-details.png" alt="Home screen" width="200" />
+   <img src="./screenshots/asset-details.png" alt="Home screen" width="350" />
 
   <div>
     <h3>Asset Details</h3>
