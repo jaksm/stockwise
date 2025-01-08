@@ -52,9 +52,9 @@ export const WatchlistProvider: FC<PropsWithChildren> = ({children}) => {
   );
 
   const removeSymbol = useCallback(
-    async (symbolId: string) => {
+    async (symbol: string) => {
       try {
-        const newSymbols = symbols.filter(s => s !== symbolId);
+        const newSymbols = symbols.filter(s => s !== symbol);
         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newSymbols));
         setSymbols(newSymbols);
       } catch (error) {

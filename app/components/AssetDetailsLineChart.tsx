@@ -16,11 +16,11 @@ import {TimeSeries} from '../models/TimeSeries';
 import {Flex} from './ui/Flex';
 import {ToggleGroup} from './ui/ToggleGroup';
 
-interface AssetDetailsLineChartProps {
+type AssetDetailsLineChartProps = {
   series: TimeSeries;
   interval: TimeSeriesInterval;
   onChangeInterval: (interval: TimeSeriesInterval) => void;
-}
+};
 
 const inter = require('../../assets/Inter.ttf');
 
@@ -120,17 +120,7 @@ export const AssetDetailsLineChart = memo(
   },
 );
 
-const ActiveValueIndicator = ({
-  xPosition,
-  yPosition,
-  top,
-  bottom,
-  activeValue,
-  textColor,
-  lineColor,
-  indicatorColor,
-  topOffset = 0,
-}: {
+type ActiveValueIndicatorProps = {
   xPosition: SharedValue<number>;
   yPosition: SharedValue<number>;
   activeValue: SharedValue<number>;
@@ -141,7 +131,19 @@ const ActiveValueIndicator = ({
   lineColor: string;
   indicatorColor: string;
   topOffset?: number;
-}) => {
+};
+
+const ActiveValueIndicator = ({
+  xPosition,
+  yPosition,
+  top,
+  bottom,
+  activeValue,
+  textColor,
+  lineColor,
+  indicatorColor,
+  topOffset = 0,
+}: ActiveValueIndicatorProps) => {
   const FONT_SIZE = 14;
   const font = useFont(inter, FONT_SIZE);
   const start = useDerivedValue(() => vec(xPosition.value, bottom));

@@ -38,7 +38,6 @@ export function Home({navigation}: HomeProps) {
 
           <Flex direction="row" align="center" gap="4">
             <IconButton icon={<Newspaper />} onPress={newsSheet.open} />
-
             <WatchlistRefreshButton />
           </Flex>
         </Flex>
